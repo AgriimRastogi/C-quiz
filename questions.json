@@ -1,2092 +1,1165 @@
 [
   {
     "id": 1,
-    "type": "concept",
-    "difficulty": "easy",
-    "question": "Which function is the entry point of a C program?",
-    "options": ["start()", "main()", "init()", "program()"],
-    "answerIndex": 1,
-    "explanation": "Execution of every C program begins from main(). The operating system calls main() after loading the program into memory."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x = 5;\nprintf(\"%d %d\", x++, ++x);",
+    "options": ["5 7", "5 6", "Undefined behavior", "6 7"],
+    "answerIndex": 2,
+    "explanation": "The variable x is modified more than once between sequence points without an intervening sequence point. C standard defines this as undefined behavior, so the result cannot be relied upon."
   },
   {
     "id": 2,
-    "type": "code",
-    "difficulty": "easy",
-    "question": "What is the output?\nint x=5; printf(\"%d\", x++);",
-    "options": ["4", "5", "6", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "Post-increment returns the current value before incrementing. x is printed as 5, then incremented to 6."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is modifying a variable multiple times between sequence points undefined?",
+    "options": [
+      "Compiler optimization issue",
+      "CPU limitation",
+      "C standard does not define evaluation order",
+      "Memory corruption"
+    ],
+    "answerIndex": 2,
+    "explanation": "The C standard intentionally leaves the order of evaluation unspecified. Modifying the same object multiple times without a sequence point makes the behavior undefined, allowing compilers to optimize aggressively."
   },
   {
     "id": 3,
-    "type": "concept",
-    "difficulty": "easy",
-    "question": "Why is stdio.h required when using printf()?",
-    "options": ["Memory allocation", "Function declaration", "String handling", "Math operations"],
-    "answerIndex": 1,
-    "explanation": "stdio.h contains the declaration of printf(). Without it, the compiler may assume a wrong function signature."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a[5]={1,2,3,4,5};\nprintf(\"%d\", *(a + *(a + 1)));",
+    "options": ["2", "3", "4", "Undefined"],
+    "answerIndex": 2,
+    "explanation": "a[1] is 2, so *(a + 2) accesses a[2], which is 3. But note indexing: *(a + *(a + 1)) → *(a + 2) → 3."
   },
   {
     "id": 4,
-    "type": "code",
-    "difficulty": "easy",
-    "question": "What is the output?\nprintf(\"%d\", 5/2);",
-    "options": ["2", "2.5", "3", "Error"],
-    "answerIndex": 0,
-    "explanation": "Both operands are integers, so integer division occurs and the decimal part is discarded."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why does pointer arithmetic scale by sizeof(type)?",
+    "options": [
+      "Hardware requirement",
+      "Compiler design choice",
+      "Correct memory addressing of elements",
+      "Performance optimization"
+    ],
+    "answerIndex": 2,
+    "explanation": "Pointer arithmetic must move by the size of the pointed type to correctly traverse elements in contiguous memory. Without scaling, accessing array elements would be incorrect."
   },
   {
     "id": 5,
-    "type": "concept",
-    "difficulty": "easy",
-    "question": "What does the & operator do in C?",
-    "options": ["Dereference pointer", "Get variable address", "Bitwise AND", "Allocate memory"],
-    "answerIndex": 1,
-    "explanation": "& returns the memory address of a variable. It is heavily used with pointers and scanf()."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint *p = (int*)malloc(sizeof(int));\n*p = 10;\nfree(p);\nprintf(\"%d\", *p);",
+    "options": ["10", "0", "Garbage value", "Undefined behavior"],
+    "answerIndex": 3,
+    "explanation": "After free(), the pointer becomes dangling. Dereferencing a freed pointer results in undefined behavior, even if the memory appears unchanged."
   },
 
   {
     "id": 6,
-    "type": "code",
-    "difficulty": "easy",
-    "question": "What is the output?\nint a=3; printf(\"%d\", ++a);",
-    "options": ["3", "4", "5", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "Pre-increment increments the value before it is used, so 4 is printed."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is dereferencing a dangling pointer undefined behavior?",
+    "options": [
+      "Memory is erased immediately",
+      "Compiler inserts runtime checks",
+      "Memory may be reused or unmapped",
+      "Only causes memory leak"
+    ],
+    "answerIndex": 2,
+    "explanation": "Freed memory may be reused by the allocator or returned to the OS. Accessing it can corrupt allocator metadata or crash the program."
   },
   {
     "id": 7,
-    "type": "concept",
-    "difficulty": "easy",
-    "question": "Why do arrays in C start with index 0?",
-    "options": ["Compiler rule", "Pointer arithmetic", "Memory waste", "Historical accident"],
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nprintf(\"%zu\", sizeof(\"hello\"));",
+    "options": ["5", "6", "Depends on compiler", "Undefined"],
     "answerIndex": 1,
-    "explanation": "Array indexing is based on pointer arithmetic. Index 0 directly maps to the base address of the array."
+    "explanation": "String literals include the null terminator. \"hello\" has 5 characters plus '\\0', so sizeof is 6."
   },
   {
     "id": 8,
-    "type": "code",
-    "difficulty": "easy",
-    "question": "What is the output?\nint a[]={10,20,30}; printf(\"%d\", *(a+1));",
-    "options": ["10", "20", "30", "Garbage"],
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is sizeof evaluated at compile time?",
+    "options": [
+      "For speed",
+      "Because it is an operator, not a function",
+      "To reduce memory usage",
+      "Because runtime size is unknown"
+    ],
     "answerIndex": 1,
-    "explanation": "Pointer arithmetic moves by element size. *(a+1) accesses the second element."
+    "explanation": "sizeof is an operator whose result is known at compile time for all non-VLA operands, allowing better optimization and no runtime overhead."
   },
   {
     "id": 9,
-    "type": "concept",
-    "difficulty": "easy",
-    "question": "Which loop executes at least once?",
-    "options": ["for", "while", "do-while", "switch"],
-    "answerIndex": 2,
-    "explanation": "do-while checks the condition after executing the loop body, guaranteeing one execution."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a=1;\nprintf(\"%d\", (a++, a+5));",
+    "options": ["6", "5", "Undefined behavior", "Compilation error"],
+    "answerIndex": 0,
+    "explanation": "The comma operator introduces a sequence point. a++ is evaluated first, then a+5 uses the incremented value, resulting in 6."
   },
   {
     "id": 10,
-    "type": "code",
-    "difficulty": "easy",
-    "question": "What is the output?\nint i=0; do{i++;}while(i<3); printf(\"%d\", i);",
-    "options": ["2", "3", "4", "0"],
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why does the comma operator introduce a sequence point?",
+    "options": [
+      "Syntax convenience",
+      "To force left-to-right evaluation",
+      "To avoid undefined behavior",
+      "Compiler requirement"
+    ],
     "answerIndex": 1,
-    "explanation": "The loop increments i until it reaches 3, then stops and prints 3."
+    "explanation": "The comma operator guarantees left operand is fully evaluated before the right, making it useful to avoid undefined behavior in complex expressions."
   },
 
   {
     "id": 11,
-    "type": "concept",
-    "difficulty": "easy",
-    "question": "Which keyword makes a variable read-only?",
-    "options": ["static", "final", "const", "register"],
-    "answerIndex": 2,
-    "explanation": "const prevents modification of a variable after initialization."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=10;\nint *p=&x;\nprintf(\"%d\", ++*p);",
+    "options": ["10", "11", "Undefined", "Compilation error"],
+    "answerIndex": 1,
+    "explanation": "++ has higher precedence than *, so ++*p increments the value pointed to by p. x becomes 11."
   },
   {
     "id": 12,
-    "type": "code",
-    "difficulty": "easy",
-    "question": "What is the output?\nint x=0; if(x) printf(\"Yes\"); else printf(\"No\");",
-    "options": ["Yes", "No", "Nothing", "Error"],
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is ++*p valid but *++p different?",
+    "options": [
+      "Same operation",
+      "Operator precedence difference",
+      "Undefined behavior",
+      "Compiler-dependent"
+    ],
     "answerIndex": 1,
-    "explanation": "In C, 0 is treated as false. The else branch executes."
+    "explanation": "Operator precedence determines binding. ++*p increments the value, while *++p increments the pointer first, then dereferences it."
   },
   {
     "id": 13,
-    "type": "concept",
-    "difficulty": "easy",
-    "question": "Which data type stores a single character?",
-    "options": ["int", "char", "float", "double"],
-    "answerIndex": 1,
-    "explanation": "char stores a single character and usually occupies 1 byte."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a[]={10,20,30};\nint *p=a;\nprintf(\"%d\", *p+++1);",
+    "options": ["11", "20", "21", "Undefined"],
+    "answerIndex": 0,
+    "explanation": "*p+++1 is parsed as (*(p++)) + 1. p++ yields 10, then +1 gives 11."
   },
   {
     "id": 14,
-    "type": "code",
-    "difficulty": "easy",
-    "question": "What is the output?\nprintf(\"%c\", 66);",
-    "options": ["66", "A", "B", "Error"],
-    "answerIndex": 2,
-    "explanation": "66 corresponds to ASCII value of 'B'."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is free(NULL) safe?",
+    "options": [
+      "Does nothing by standard",
+      "Compiler checks it",
+      "OS ignores it",
+      "Undefined behavior"
+    ],
+    "answerIndex": 0,
+    "explanation": "The C standard explicitly specifies that calling free with NULL has no effect, making it safe."
   },
   {
     "id": 15,
-    "type": "concept",
-    "difficulty": "easy",
-    "question": "Which symbol terminates a C statement?",
-    "options": [":", ".", ";", ","],
-    "answerIndex": 2,
-    "explanation": "Each C statement must end with a semicolon."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=1;\nprintf(\"%d\", sizeof(x++));",
+    "options": ["1", "2", "Depends", "Undefined"],
+    "answerIndex": 0,
+    "explanation": "The operand of sizeof is not evaluated. x++ is never executed, so x remains unchanged and sizeof(int) is printed."
   },
 
   {
     "id": 16,
-    "type": "code",
-    "difficulty": "easy",
-    "question": "What is the output?\nint a=5; printf(\"%d\", a--);",
-    "options": ["4", "5", "6", "Undefined"],
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why does sizeof not evaluate its operand?",
+    "options": [
+      "Optimization only",
+      "Because it is compile-time operator",
+      "To avoid side effects",
+      "Undefined behavior prevention"
+    ],
     "answerIndex": 1,
-    "explanation": "Post-decrement prints the current value, then decrements it."
+    "explanation": "sizeof is defined to operate on types or expressions without evaluating them, enabling compile-time size computation."
   },
   {
     "id": 17,
-    "type": "concept",
-    "difficulty": "easy",
-    "question": "Which keyword exits a loop immediately?",
-    "options": ["continue", "exit", "break", "return"],
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=5;\nprintf(\"%d\", x+++x);",
+    "options": ["10", "11", "Undefined behavior", "Compilation error"],
     "answerIndex": 2,
-    "explanation": "break terminates the nearest enclosing loop."
+    "explanation": "x is modified and read again without a sequence point. This violates C rules and causes undefined behavior."
   },
   {
     "id": 18,
-    "type": "code",
-    "difficulty": "easy",
-    "question": "What is the output?\nfor(int i=0;i<3;i++); printf(\"X\");",
-    "options": ["X", "XXX", "Error", "No output"],
-    "answerIndex": 0,
-    "explanation": "The loop body is empty due to the semicolon, so printf runs once."
-  },
-  {
-    "id": 19,
     "type": "concept",
-    "difficulty": "easy",
-    "question": "Which function reads formatted input?",
-    "options": ["printf", "scanf", "puts", "gets"],
-    "answerIndex": 1,
-    "explanation": "scanf reads formatted data from standard input."
-  },
-  {
-    "id": 20,
-    "type": "code",
-    "difficulty": "easy",
-    "question": "What is the output?\nint x=5; if(x=10) printf(\"Yes\");",
-    "options": ["Yes", "No output", "Error", "Undefined"],
-    "answerIndex": 0,
-    "explanation": "Assignment returns the assigned value. Since 10 is non-zero, the condition is true."
+    "difficulty": "superhard",
+    "question": "Why is evaluation order important in C?",
+    "options": [
+      "Affects performance",
+      "Affects readability",
+      "Can cause undefined behavior",
+      "Only affects debugging"
+    ],
+    "answerIndex": 2,
+    "explanation": "C allows compilers to choose evaluation order. If code relies on a specific order, it may break or become undefined."
   },
 
   {
-    "id": 21,
+    "id": 19,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a=0;\nprintf(\"%d\", a && ++a);",
+    "options": ["0", "1", "Undefined", "Compilation error"],
+    "answerIndex": 0,
+    "explanation": "Logical AND short-circuits. Since a is 0, ++a is never evaluated."
+  },
+  {
+    "id": 20,
     "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is sizeof(pointer) independent of pointed type?",
-    "options": ["Compiler bug", "Pointer stores address only", "Undefined behavior", "Optimization"],
+    "difficulty": "superhard",
+    "question": "Why does short-circuiting prevent undefined behavior?",
+    "options": [
+      "Compiler ignores second operand",
+      "Second operand not evaluated",
+      "Runtime check",
+      "Optimization"
+    ],
     "answerIndex": 1,
-    "explanation": "A pointer only stores a memory address, so its size depends on architecture, not data type."
+    "explanation": "Short-circuit operators guarantee that the second operand is not evaluated if the result is already determined."
+  },
+  {
+    "id": 21,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a=1;\nprintf(\"%d\", a+++a+++a);",
+    "options": ["3", "4", "Undefined behavior", "Compilation error"],
+    "answerIndex": 2,
+    "explanation": "The variable 'a' is modified multiple times between sequence points without a defined evaluation order. This violates the C standard and results in undefined behavior."
   },
   {
     "id": 22,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint a[]={1,2,3}; printf(\"%d\", a[3]);",
-    "options": ["0", "Garbage", "3", "Compile error"],
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "What is a sequence point in C?",
+    "options": [
+      "A compiler optimization step",
+      "A point where all side effects are complete",
+      "A memory barrier",
+      "A runtime checkpoint"
+    ],
     "answerIndex": 1,
-    "explanation": "Accessing out-of-bounds array elements results in undefined behavior, often garbage values."
+    "explanation": "A sequence point is a point in execution where all side effects of previous evaluations are guaranteed to be complete before the next evaluation begins."
   },
   {
     "id": 23,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Which memory does malloc() allocate?",
-    "options": ["Stack", "Heap", "Data segment", "Register"],
-    "answerIndex": 1,
-    "explanation": "malloc allocates memory dynamically from the heap."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=0;\nprintf(\"%d\", x++ + ++x);",
+    "options": ["2", "1", "Undefined behavior", "Compilation error"],
+    "answerIndex": 2,
+    "explanation": "x is modified twice without an intervening sequence point. The order of evaluation is undefined, so the result is undefined behavior."
   },
   {
     "id": 24,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint *p=NULL; printf(\"%d\", p==NULL);",
-    "options": ["0", "1", "Crash", "Undefined"],
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why does C allow undefined behavior?",
+    "options": [
+      "To simplify syntax",
+      "To support low-level optimizations",
+      "To make debugging harder",
+      "To reduce compiler size"
+    ],
     "answerIndex": 1,
-    "explanation": "Comparing a pointer with NULL is valid and evaluates to true here."
+    "explanation": "Undefined behavior allows compilers to generate highly optimized code without being constrained by edge-case semantics."
   },
   {
     "id": 25,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is reading an uninitialized variable dangerous?",
-    "options": ["Compiler error", "Logical bug", "Undefined behavior", "Memory leak"],
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a[]={1,2,3};\nprintf(\"%d\", 2[a]);",
+    "options": ["1", "2", "3", "Compilation error"],
     "answerIndex": 2,
-    "explanation": "Uninitialized variables contain indeterminate values, leading to undefined behavior."
+    "explanation": "Array subscripting is defined as *(a + b). Thus 2[a] is equivalent to a[2], which is 3."
   },
+
   {
     "id": 26,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nchar s[] = \"abc\"; printf(\"%d\", strlen(s));",
-    "options": ["2", "3", "4", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "strlen counts characters until the null terminator. \"abc\" has three characters, so the result is 3."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is a[b] equivalent to *(a + b)?",
+    "options": [
+      "Compiler trick",
+      "Historical accident",
+      "Array-pointer equivalence",
+      "Undefined behavior"
+    ],
+    "answerIndex": 2,
+    "explanation": "In expressions, array names decay to pointers. The subscript operator is defined in terms of pointer arithmetic."
   },
   {
     "id": 27,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why does an array name decay to a pointer in function calls?",
-    "options": ["Compiler limitation", "Language design", "Optimization only", "Undefined behavior"],
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nprintf(\"%d\", sizeof(char) == 1);",
+    "options": ["0", "1", "Depends on compiler", "Undefined"],
     "answerIndex": 1,
-    "explanation": "In expressions, arrays convert to pointers to their first element. This avoids copying entire arrays when passing to functions."
+    "explanation": "The C standard guarantees sizeof(char) is exactly 1 byte."
   },
   {
     "id": 28,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint a=5; printf(\"%d\", a<<1);",
-    "options": ["5", "10", "2", "Undefined"],
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is sizeof(char) always 1?",
+    "options": [
+      "Hardware requirement",
+      "Language definition",
+      "Compiler optimization",
+      "Memory alignment"
+    ],
     "answerIndex": 1,
-    "explanation": "Left shift by 1 bit multiplies the value by 2. So 5 becomes 10."
+    "explanation": "The C standard defines a byte as the size of char, making sizeof(char) equal to 1 by definition."
   },
   {
     "id": 29,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Which operator accesses a structure member using a pointer?",
-    "options": [".", "->", "*", "&"],
-    "answerIndex": 1,
-    "explanation": "The arrow operator dereferences the pointer and accesses the structure member in one step."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a=5;\nprintf(\"%d\", a = a + (a = 3));",
+    "options": ["8", "6", "3", "Undefined behavior"],
+    "answerIndex": 3,
+    "explanation": "The variable 'a' is modified and read again without a sequence point. This results in undefined behavior."
   },
   {
     "id": 30,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint x=3; printf(\"%d\", x+++x);",
-    "options": ["6", "7", "Compilation error", "Undefined"],
-    "answerIndex": 3,
-    "explanation": "The variable x is modified more than once without a sequence point. This leads to undefined behavior."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is self-assignment with side effects dangerous?",
+    "options": [
+      "Performance loss",
+      "Compiler warning",
+      "Undefined evaluation order",
+      "Stack overflow"
+    ],
+    "answerIndex": 2,
+    "explanation": "When a variable is modified and read again without a defined order, the result becomes undefined."
   },
 
   {
     "id": 31,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why must the return type of main() be int?",
-    "options": ["Syntax rule", "OS expects status code", "Compiler choice", "Memory safety"],
-    "answerIndex": 1,
-    "explanation": "The return value of main() is passed to the operating system as the program’s exit status."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=1;\nprintf(\"%d\", ++x * ++x);",
+    "options": ["4", "6", "Undefined behavior", "Compilation error"],
+    "answerIndex": 2,
+    "explanation": "x is modified twice between sequence points. The order of evaluation of operands of * is unspecified, causing undefined behavior."
   },
   {
     "id": 32,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint a[]={1,2,3,4}; printf(\"%d\", sizeof(a)/sizeof(a[0]));",
-    "options": ["3", "4", "8", "Undefined"],
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is operand evaluation order unspecified in C?",
+    "options": [
+      "Language oversight",
+      "To enable optimization freedom",
+      "Hardware constraint",
+      "Legacy compatibility"
+    ],
     "answerIndex": 1,
-    "explanation": "The expression computes the number of elements by dividing total array size by one element’s size."
+    "explanation": "Leaving evaluation order unspecified allows compilers to generate more efficient code for different architectures."
   },
   {
     "id": 33,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is gets() considered unsafe?",
-    "options": ["Slow input", "No buffer size check", "Deprecated syntax", "Compiler issue"],
-    "answerIndex": 1,
-    "explanation": "gets() does not check input length, which can cause buffer overflows and security vulnerabilities."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=5;\nprintf(\"%d\", x + ++x);",
+    "options": ["11", "10", "Undefined behavior", "Compilation error"],
+    "answerIndex": 2,
+    "explanation": "The value of x is modified and read again without a sequence point, resulting in undefined behavior."
   },
   {
     "id": 34,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint *p = NULL; *p = 10; printf(\"Done\");",
-    "options": ["Done", "Compile error", "Segmentation fault", "Undefined"],
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Which operator introduces a sequence point?",
+    "options": ["+", "*", ",", "[]"],
     "answerIndex": 2,
-    "explanation": "Dereferencing a NULL pointer attempts to access invalid memory, causing a runtime crash."
+    "explanation": "The comma operator guarantees that the left operand is fully evaluated before the right operand."
   },
   {
     "id": 35,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why should free() be called on dynamically allocated memory?",
-    "options": ["Speed", "Avoid memory leaks", "Compiler requirement", "Stack cleanup"],
-    "answerIndex": 1,
-    "explanation": "If dynamically allocated memory is not freed, it remains reserved, causing memory leaks."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a=1;\nprintf(\"%d\", (a++, a++, a));",
+    "options": ["1", "2", "3", "Undefined behavior"],
+    "answerIndex": 2,
+    "explanation": "The comma operator creates sequence points. a is incremented twice in order, resulting in a value of 3."
   },
 
   {
     "id": 36,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint x=10; printf(\"%d\", x>5 && x<20);",
-    "options": ["0", "1", "10", "Undefined"],
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is the comma operator safer than chained arithmetic operators?",
+    "options": [
+      "Better performance",
+      "Enforces evaluation order",
+      "Avoids syntax errors",
+      "Reduces memory usage"
+    ],
     "answerIndex": 1,
-    "explanation": "Both conditions are true, so the logical AND expression evaluates to 1."
+    "explanation": "The comma operator guarantees left-to-right evaluation, preventing undefined behavior caused by ambiguous order."
   },
   {
     "id": 37,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "What does the static keyword do for local variables?",
-    "options": ["Limits scope", "Preserves value", "Speeds execution", "Allocates heap"],
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a[]={10,20,30};\nint *p=a;\nprintf(\"%d\", *++p);",
+    "options": ["10", "20", "30", "Undefined"],
     "answerIndex": 1,
-    "explanation": "A static local variable retains its value between function calls instead of being reinitialized."
+    "explanation": "++p increments the pointer to point to a[1], then dereferencing yields 20."
   },
   {
     "id": 38,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint x=5; printf(\"%d\", x==5 ? 1 : 0);",
-    "options": ["0", "1", "5", "Error"],
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why does ++p change the pointer but p++ return old address?",
+    "options": [
+      "Compiler rule",
+      "Post vs pre increment semantics",
+      "Undefined behavior",
+      "Architecture dependent"
+    ],
     "answerIndex": 1,
-    "explanation": "The ternary operator returns 1 because the condition x==5 is true."
+    "explanation": "Pre-increment changes the value before use, while post-increment returns the old value before incrementing."
   },
   {
     "id": 39,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why are global variables discouraged?",
-    "options": ["Slower", "Harder to debug", "Use more memory", "Not portable"],
-    "answerIndex": 1,
-    "explanation": "Global variables can be modified from anywhere, making programs harder to understand and debug."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a[]={1,2,3};\nprintf(\"%d\", *a++);",
+    "options": ["1", "2", "3", "Undefined"],
+    "answerIndex": 0,
+    "explanation": "*a++ is parsed as *(a++). The value at original a is printed, then the pointer is incremented."
   },
   {
     "id": 40,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint a=1; switch(a){case 1: printf(\"A\"); case 2: printf(\"B\");}",
-    "options": ["A", "AB", "B", "Nothing"],
-    "answerIndex": 1,
-    "explanation": "Without break statements, execution falls through to the next case."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is *(a++) valid but (++a) invalid for arrays?",
+    "options": [
+      "Arrays are constant pointers",
+      "Compiler bug",
+      "Undefined behavior",
+      "Memory protection"
+    ],
+    "answerIndex": 0,
+    "explanation": "Array names decay to constant pointers. You can increment the pointer expression, but not the array itself."
   },
 
   {
     "id": 41,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "What is pointer arithmetic based on?",
-    "options": ["Bytes", "Data type size", "Compiler", "OS"],
-    "answerIndex": 1,
-    "explanation": "Pointer arithmetic advances by the size of the data type it points to, not by raw bytes."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nprintf(\"%d\", printf(\"Hello\"));",
+    "options": ["Hello5", "5Hello", "Hello", "Compilation error"],
+    "answerIndex": 0,
+    "explanation": "printf returns the number of characters printed. \"Hello\" prints first, then 5 is printed."
   },
   {
     "id": 42,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint a[]={10,20,30}; int *p=a; printf(\"%d\", *(p+2));",
-    "options": ["10", "20", "30", "Garbage"],
-    "answerIndex": 2,
-    "explanation": "p+2 points to the third element of the array, which is 30."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why does printf return number of characters printed?",
+    "options": [
+      "Historical reason",
+      "For error checking and formatting control",
+      "Optimization",
+      "POSIX requirement"
+    ],
+    "answerIndex": 1,
+    "explanation": "The return value allows programs to detect output errors and manage formatted output dynamically."
   },
   {
     "id": 43,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is recursion memory-expensive?",
-    "options": ["Heap use", "Stack frames", "Slow CPU", "Compiler overhead"],
-    "answerIndex": 1,
-    "explanation": "Each recursive call adds a new stack frame, increasing stack memory usage."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=5;\nprintf(\"%d\", (x>3) ? x++ : ++x);",
+    "options": ["5", "6", "Undefined", "Compilation error"],
+    "answerIndex": 0,
+    "explanation": "The conditional operator evaluates only one branch. Since x>3 is true, x++ executes and prints 5."
   },
   {
     "id": 44,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint i=0; while(i<3){ printf(\"%d\", i); i++; }",
-    "options": ["012", "123", "0123", "Error"],
-    "answerIndex": 0,
-    "explanation": "The loop prints the value of i before incrementing it each iteration."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why does the conditional operator avoid undefined behavior here?",
+    "options": [
+      "Compiler optimization",
+      "Only one branch evaluated",
+      "Sequence point insertion",
+      "Undefined but safe"
+    ],
+    "answerIndex": 1,
+    "explanation": "The conditional operator guarantees that only one of the second or third operands is evaluated."
   },
   {
     "id": 45,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why must array size be passed to functions explicitly?",
-    "options": ["Syntax rule", "Size info lost", "Compiler bug", "Optimization"],
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a=0;\nprintf(\"%d\", a || a++);",
+    "options": ["0", "1", "Undefined", "Compilation error"],
     "answerIndex": 1,
-    "explanation": "When passed to a function, arrays decay to pointers and lose size information."
+    "explanation": "a is initially 0, so logical OR evaluates the second operand. a++ increments a, making the result true."
   },
 
   {
     "id": 46,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nprintf(\"%d\", sizeof(char));",
-    "options": ["1", "2", "4", "Depends"],
-    "answerIndex": 0,
-    "explanation": "By definition, sizeof(char) is always 1 byte in C."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why do logical operators short-circuit?",
+    "options": [
+      "Performance only",
+      "Language rule",
+      "Prevent unnecessary evaluation",
+      "All of the above"
+    ],
+    "answerIndex": 3,
+    "explanation": "Short-circuiting improves performance, prevents errors, and is mandated by the language specification."
   },
   {
     "id": 47,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "What does the extern keyword indicate?",
-    "options": ["Local variable", "Global variable defined elsewhere", "Constant", "Register variable"],
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a=5;\nprintf(\"%d\", a && ++a && a++);",
+    "options": ["0", "1", "Undefined", "Compilation error"],
     "answerIndex": 1,
-    "explanation": "extern tells the compiler that the variable is defined in another source file."
+    "explanation": "Logical AND evaluates left to right with short-circuiting. All operands are evaluated safely without undefined behavior."
   },
   {
     "id": 48,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint x=10; printf(\"%d\", ~x);",
-    "options": ["-11", "-10", "10", "Undefined"],
-    "answerIndex": 0,
-    "explanation": "Bitwise NOT flips all bits. For signed integers, this results in -(x+1)."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is logical AND safer than bitwise AND in expressions with side effects?",
+    "options": [
+      "Different precedence",
+      "Short-circuiting behavior",
+      "Compiler optimization",
+      "Undefined behavior avoidance"
+    ],
+    "answerIndex": 1,
+    "explanation": "Logical AND stops evaluation once the result is determined, preventing unintended side effects."
   },
   {
     "id": 49,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is double free dangerous?",
-    "options": ["Slow execution", "Memory leak", "Heap corruption", "Compile error"],
-    "answerIndex": 2,
-    "explanation": "Freeing the same memory twice corrupts the heap allocator’s internal state."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nprintf(\"%d\", sizeof(1.0));",
+    "options": ["4", "8", "Depends on compiler", "Undefined"],
+    "answerIndex": 1,
+    "explanation": "1.0 is a double literal by default, and sizeof(double) is typically 8 bytes."
   },
   {
     "id": 50,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint a=5; printf(\"%d\", a && 0);",
-    "options": ["0", "1", "5", "Undefined"],
-    "answerIndex": 0,
-    "explanation": "Logical AND returns 0 if either operand is false."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why are floating-point literals double by default?",
+    "options": [
+      "Historical design",
+      "Precision preference",
+      "Performance",
+      "Compiler requirement"
+    ],
+    "answerIndex": 1,
+    "explanation": "Using double by default provides higher precision and avoids accidental loss of accuracy."
   },
 
   {
     "id": 51,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "What is a dangling pointer?",
-    "options": ["Uninitialized pointer", "Pointer to freed memory", "NULL pointer", "Function pointer"],
-    "answerIndex": 1,
-    "explanation": "A dangling pointer points to memory that has already been freed, making access unsafe."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=1;\nprintf(\"%d\", sizeof(x++));",
+    "options": ["1", "2", "Depends", "Undefined"],
+    "answerIndex": 0,
+    "explanation": "sizeof does not evaluate its operand, so x++ is not executed and x remains unchanged."
   },
   {
     "id": 52,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint x=1; printf(\"%d\", x || 0);",
-    "options": ["0", "1", "Undefined", "Error"],
-    "answerIndex": 1,
-    "explanation": "Logical OR returns true if at least one operand is true."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is sizeof not a function?",
+    "options": [
+      "Syntax simplicity",
+      "Avoid runtime cost",
+      "Compile-time evaluation",
+      "All of the above"
+    ],
+    "answerIndex": 3,
+    "explanation": "sizeof is an operator designed for compile-time evaluation without runtime overhead."
   },
   {
     "id": 53,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why should realloc() be used carefully?",
-    "options": ["Slow", "May move memory", "Syntax issue", "Leaks always"],
-    "answerIndex": 1,
-    "explanation": "realloc may return a new memory address, making old pointers invalid."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a[]={1,2,3};\nprintf(\"%d\", *(&a + 1) - a[0]);",
+    "options": ["2", "3", "Undefined behavior", "Garbage"],
+    "answerIndex": 2,
+    "explanation": "&a points to the whole array, not its first element. Pointer arithmetic here is invalid and causes undefined behavior."
   },
   {
     "id": 54,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nprintf(\"%d\", sizeof(int*));",
-    "options": ["2", "4", "8", "Depends"],
-    "answerIndex": 3,
-    "explanation": "Pointer size depends on system architecture (32-bit or 64-bit)."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is &a different from a?",
+    "options": [
+      "Same thing",
+      "Different pointer types",
+      "Compiler bug",
+      "Undefined behavior"
+    ],
+    "answerIndex": 1,
+    "explanation": "&a is a pointer to an array, while a decays to a pointer to its first element."
   },
   {
     "id": 55,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is pointer comparison restricted?",
-    "options": ["Syntax rule", "Undefined behavior", "Slow", "Compiler bug"],
-    "answerIndex": 1,
-    "explanation": "Comparing pointers from unrelated objects is undefined behavior according to the C standard."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a[]={1,2,3};\nint *p=(int*)(&a+1);\nprintf(\"%d\", *(p-1));",
+    "options": ["1", "2", "3", "Undefined behavior"],
+    "answerIndex": 3,
+    "explanation": "Casting &a+1 to int* and dereferencing relies on invalid pointer arithmetic, leading to undefined behavior."
   },
 
   {
     "id": 56,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint x=2; printf(\"%d\", x*3+1);",
-    "options": ["7", "9", "5", "Undefined"],
-    "answerIndex": 0,
-    "explanation": "Operator precedence evaluates multiplication before addition."
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is pointer casting dangerous?",
+    "options": [
+      "Breaks alignment",
+      "Breaks strict aliasing",
+      "Hides bugs",
+      "All of the above"
+    ],
+    "answerIndex": 3,
+    "explanation": "Improper pointer casting can violate alignment rules, aliasing assumptions, and hide serious bugs."
   },
   {
     "id": 57,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why are macros not type-safe?",
-    "options": ["Runtime behavior", "Text substitution", "Compiler bug", "Linker issue"],
-    "answerIndex": 1,
-    "explanation": "Macros perform simple text replacement without type checking."
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=1;\nprintf(\"%d\", (x++, x++, x++, x));",
+    "options": ["1", "2", "3", "4"],
+    "answerIndex": 3,
+    "explanation": "Each comma introduces a sequence point. x is incremented three times sequentially, resulting in x=4."
   },
   {
     "id": 58,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint a=0; printf(\"%d\", ++a + a++);",
-    "options": ["1", "2", "Undefined", "Error"],
-    "answerIndex": 2,
-    "explanation": "The variable is modified multiple times without a sequence point, causing undefined behavior."
-  },
-  {
-    "id": 59,
     "type": "concept",
-    "difficulty": "medium",
-    "question": "What does the volatile keyword indicate?",
-    "options": ["Constant value", "May change unexpectedly", "Thread-safe", "Fast access"],
-    "answerIndex": 1,
-    "explanation": "volatile tells the compiler not to optimize accesses because the value may change externally."
-  },
-  {
-    "id": 60,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint x=10; printf(\"%d\", x>=10);",
-    "options": ["0", "1", "10", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "The relational expression evaluates to true, which is printed as 1."
-  },
-  {
-    "id": 61,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is switch-case faster than multiple if-else in some cases?",
-    "options": ["Uses less memory", "Uses jump table", "Inline expansion", "Compiler ignores it"],
-    "answerIndex": 1,
-    "explanation": "For dense case values, compilers may generate a jump table, allowing constant-time branching instead of sequential checks."
-  },
-  {
-    "id": 62,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint x=5; printf(\"%d\", x & 1);",
-    "options": ["0", "1", "5", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "Bitwise AND with 1 checks the least significant bit. Since 5 is odd, the result is 1."
-  },
-  {
-    "id": 63,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why are header guards used?",
-    "options": ["Speed up execution", "Prevent multiple inclusion", "Reduce memory", "Avoid linking errors"],
-    "answerIndex": 1,
-    "explanation": "Header guards ensure a header file is included only once per compilation unit, preventing redefinition errors."
-  },
-  {
-    "id": 64,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint a=5,b=10; printf(\"%d\", a>b ? a : b);",
-    "options": ["5", "10", "0", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "The ternary operator selects the larger value because the condition a>b is false."
-  },
-  {
-    "id": 65,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "What is the main purpose of typedef?",
-    "options": ["Create variables", "Create aliases", "Allocate memory", "Define macros"],
-    "answerIndex": 1,
-    "explanation": "typedef creates an alias for an existing data type, improving readability and portability."
-  },
-
-  {
-    "id": 66,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nchar s[]=\"hi\"; printf(\"%d\", sizeof(s));",
-    "options": ["2", "3", "4", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "The array includes the null terminator, so size is 3 bytes."
-  },
-  {
-    "id": 67,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is recursion risky in C?",
-    "options": ["Heap overflow", "Stack overflow", "Syntax error", "Link error"],
-    "answerIndex": 1,
-    "explanation": "Each recursive call consumes stack space, and deep recursion can exhaust the stack."
-  },
-  {
-    "id": 68,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint x=1; printf(\"%d\", x<<2);",
-    "options": ["2", "4", "8", "Undefined"],
-    "answerIndex": 2,
-    "explanation": "Left shifting by 2 bits multiplies the number by 4, so 1 becomes 4? No — 1<<2 = 4, printed as 4."
-  },
-  {
-    "id": 69,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why must function prototypes be declared?",
-    "options": ["Speed", "Type checking", "Memory allocation", "Inlining"],
-    "answerIndex": 1,
-    "explanation": "Function prototypes allow the compiler to check argument types and return types before use."
-  },
-  {
-    "id": 70,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint a=10; printf(\"%d\", a>>1);",
-    "options": ["5", "10", "20", "Undefined"],
-    "answerIndex": 0,
-    "explanation": "Right shift divides the number by 2 for positive integers."
-  },
-
-  {
-    "id": 71,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "What is a function pointer?",
-    "options": ["Pointer to data", "Pointer to function", "Function returning pointer", "Macro"],
-    "answerIndex": 1,
-    "explanation": "A function pointer stores the address of a function and allows dynamic function calls."
-  },
-  {
-    "id": 72,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint (*fp)(int)=NULL; printf(\"%d\", fp==NULL);",
-    "options": ["0", "1", "Error", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "Comparing a function pointer with NULL is valid and returns true here."
-  },
-  {
-    "id": 73,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is union size equal to its largest member?",
-    "options": ["Optimization", "Shared memory", "Compiler bug", "Alignment only"],
-    "answerIndex": 1,
-    "explanation": "All union members share the same memory location, so enough space is needed for the largest member."
-  },
-  {
-    "id": 74,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nunions not used here\nint a=5; printf(\"%d\", ++a + a);",
-    "options": ["11", "10", "Undefined", "Error"],
-    "answerIndex": 0,
-    "explanation": "a is incremented first to 6, then added to itself giving 12? No — ++a makes a=6, then 6+6=12 → printed 12."
-  },
-  {
-    "id": 75,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why should malloc return value be checked?",
-    "options": ["Speed", "NULL on failure", "Syntax", "Garbage collection"],
-    "answerIndex": 1,
-    "explanation": "malloc returns NULL if allocation fails. Using the pointer without checking can crash the program."
-  },
-
-  {
-    "id": 76,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint *p=(int*)malloc(sizeof(int)); *p=7; printf(\"%d\", *p);",
-    "options": ["7", "Garbage", "Crash", "Undefined"],
-    "answerIndex": 0,
-    "explanation": "Memory is allocated successfully and dereferenced correctly."
-  },
-  {
-    "id": 77,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is free(NULL) safe?",
-    "options": ["Compiler handles it", "C standard guarantees", "No-op", "All of the above"],
-    "answerIndex": 3,
-    "explanation": "The C standard defines free(NULL) as a no-op, making it safe."
-  },
-  {
-    "id": 78,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint a=5; int *p=&a; printf(\"%d\", *p);",
-    "options": ["5", "Address", "Garbage", "Undefined"],
-    "answerIndex": 0,
-    "explanation": "The pointer p holds the address of a and dereferencing it gives the value of a."
-  },
-  {
-    "id": 79,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is double free dangerous?",
-    "options": ["Memory leak", "Heap corruption", "Compile error", "Slow code"],
-    "answerIndex": 1,
-    "explanation": "Freeing the same memory twice corrupts the heap allocator’s internal structures."
-  },
-  {
-    "id": 80,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nprintf(\"%d\", sizeof(int[10]));",
-    "options": ["10", "20", "40", "Depends"],
-    "answerIndex": 2,
-    "explanation": "An array of 10 ints occupies 10 × sizeof(int) bytes."
-  },
-
-  {
-    "id": 81,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is modifying a variable multiple times without sequence points unsafe?",
-    "options": ["Slow execution", "Undefined behavior", "Compiler error", "Memory leak"],
-    "answerIndex": 1,
-    "explanation": "The C standard does not define the order of evaluation, leading to undefined behavior."
-  },
-  {
-    "id": 82,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=0; printf(\"%d\", x++ + ++x);",
-    "options": ["1", "2", "Undefined", "Error"],
-    "answerIndex": 2,
-    "explanation": "x is modified more than once between sequence points, causing undefined behavior."
-  },
-  {
-    "id": 83,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "What is strict aliasing?",
-    "options": ["Memory alignment rule", "Pointer optimization rule", "Macro rule", "Linker rule"],
-    "answerIndex": 1,
-    "explanation": "Strict aliasing allows compilers to assume pointers of different types do not refer to the same memory."
-  },
-  {
-    "id": 84,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint *p; printf(\"%d\", *p);",
-    "options": ["0", "Garbage", "Crash", "Undefined"],
-    "answerIndex": 3,
-    "explanation": "Dereferencing an uninitialized pointer leads to undefined behavior."
-  },
-  {
-    "id": 85,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is returning pointer to local variable invalid?",
-    "options": ["Syntax error", "Stack memory reclaimed", "Heap conflict", "Optimization"],
-    "answerIndex": 1,
-    "explanation": "Local variables live on the stack, which is destroyed when the function returns."
-  },
-
-  {
-    "id": 86,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint *p=(int*)malloc(4); p++; free(p);",
-    "options": ["Safe", "Memory leak", "Undefined behavior", "Compile error"],
-    "answerIndex": 2,
-    "explanation": "free must be called on the original pointer returned by malloc, not an incremented one."
-  },
-  {
-    "id": 87,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why does realloc potentially invalidate pointers?",
-    "options": ["Memory cleared", "Memory moved", "Stack used", "Syntax"],
-    "answerIndex": 1,
-    "explanation": "realloc may move memory to a new location, making old pointers invalid."
-  },
-  {
-    "id": 88,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint a=5; printf(\"%d\", *(int*)((char*)&a));",
-    "options": ["5", "Garbage", "Undefined", "Depends"],
-    "answerIndex": 3,
-    "explanation": "The result depends on endianness and representation, making it non-portable."
-  },
-  {
-    "id": 89,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is undefined behavior dangerous?",
-    "options": ["Slow", "Unpredictable results", "Compile error", "Ignored"],
-    "answerIndex": 1,
-    "explanation": "The compiler may assume undefined behavior never happens and optimize aggressively."
-  },
-  {
-    "id": 90,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nprintf(\"%d\", sizeof(void*));",
-    "options": ["4", "8", "Depends", "Error"],
-    "answerIndex": 2,
-    "explanation": "The size of a pointer depends on system architecture."
-  },
-
-  {
-    "id": 91,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "What is a wild pointer?",
-    "options": ["NULL pointer", "Uninitialized pointer", "Dangling pointer", "Function pointer"],
-    "answerIndex": 1,
-    "explanation": "A wild pointer is uninitialized and points to an arbitrary memory location."
-  },
-  {
-    "id": 92,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint a=10; printf(\"%d\", a/=2);",
-    "options": ["5", "10", "2", "Undefined"],
-    "answerIndex": 0,
-    "explanation": "The compound assignment divides a by 2 and assigns the result back to a."
-  },
-  {
-    "id": 93,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why are VLAs risky?",
-    "options": ["Heap overflow", "Stack overflow", "Syntax issue", "Link error"],
-    "answerIndex": 1,
-    "explanation": "Variable Length Arrays are allocated on the stack and can exhaust stack memory."
-  },
-  {
-    "id": 94,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=1; printf(\"%d\", x && x++);",
-    "options": ["0", "1", "2", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "Logical AND short-circuits after evaluating left operand true, then evaluates right safely."
-  },
-  {
-    "id": 95,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why must free() be matched with malloc()?",
-    "options": ["Style rule", "Heap consistency", "Compiler rule", "Speed"],
-    "answerIndex": 1,
-    "explanation": "Memory allocators rely on proper pairing to maintain heap integrity."
-  },
-
-  {
-    "id": 96,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=5; printf(\"%d\", ++x * 2);",
-    "options": ["10", "12", "11", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "x is incremented first to 6, then multiplied by 2."
-  },
-  {
-    "id": 97,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is pointer arithmetic outside arrays undefined?",
-    "options": ["Syntax", "C standard rule", "Slow", "Compiler bug"],
-    "answerIndex": 1,
-    "explanation": "The C standard only defines pointer arithmetic within the same array object."
-  },
-  {
-    "id": 98,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint a[]={1,2,3}; printf(\"%d\", *(a+3));",
-    "options": ["0", "3", "Garbage", "Error"],
-    "answerIndex": 2,
-    "explanation": "Accessing one past the array bounds is undefined behavior."
-  },
-  {
-    "id": 99,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why are macros dangerous compared to functions?",
-    "options": ["Slow", "No type checking", "Memory leak", "Inlining"],
-    "answerIndex": 1,
-    "explanation": "Macros perform text substitution without type safety or proper evaluation rules."
-  },
-  {
-    "id": 100,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=0; printf(\"%d\", x++ + 1);",
-    "options": ["1", "0", "Undefined", "Error"],
-    "answerIndex": 0,
-    "explanation": "x++ returns 0 first, then increments x after the expression is evaluated."
-  },
-  {
-    "id": 101,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why does sizeof(array) give different result inside a function?",
-    "options": [
-      "Compiler bug",
-      "Array decays to pointer",
-      "Optimization issue",
-      "Undefined behavior"
-    ],
-    "answerIndex": 1,
-    "explanation": "When an array is passed to a function, it decays into a pointer. sizeof then returns the size of the pointer, not the original array."
-  },
-  {
-    "id": 102,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint a[5]; printf(\"%d\", sizeof(a));",
-    "options": ["5", "10", "20", "Depends"],
-    "answerIndex": 2,
-    "explanation": "The array contains 5 integers. On most systems, int is 4 bytes, so total size is 20 bytes."
-  },
-  {
-    "id": 103,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is fgets() safer than gets()?",
-    "options": [
-      "Faster execution",
-      "Checks buffer size",
-      "Easier syntax",
-      "Returns string length"
-    ],
-    "answerIndex": 1,
-    "explanation": "fgets limits the number of characters read, preventing buffer overflows that gets() is vulnerable to."
-  },
-  {
-    "id": 104,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nchar s[10]; fgets(s,10,stdin); printf(\"%s\", s);",
-    "options": [
-      "User input",
-      "Truncated input",
-      "Compilation error",
-      "Undefined behavior"
-    ],
-    "answerIndex": 0,
-    "explanation": "fgets reads user input safely up to the buffer size and prints it as-is."
-  },
-  {
-    "id": 105,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is void* used in malloc?",
-    "options": [
-      "Speed optimization",
-      "Generic pointer",
-      "Type safety",
-      "Compiler requirement"
-    ],
-    "answerIndex": 1,
-    "explanation": "void* can be implicitly converted to any data type pointer in C, making malloc generic."
-  },
-
-  {
-    "id": 106,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint *p = malloc(sizeof(int)); printf(\"%d\", p==NULL);",
-    "options": ["0", "1", "Crash", "Undefined"],
-    "answerIndex": 0,
-    "explanation": "If malloc succeeds, p is not NULL, so the comparison prints 0."
-  },
-  {
-    "id": 107,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "What does the restrict keyword indicate?",
-    "options": [
-      "Read-only pointer",
-      "No aliasing",
-      "Volatile memory",
-      "Static allocation"
-    ],
-    "answerIndex": 1,
-    "explanation": "restrict promises the compiler that the pointer is the only reference to that memory, enabling optimizations."
-  },
-  {
-    "id": 108,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint x=10; printf(\"%d\", x & 0);",
-    "options": ["0", "10", "Undefined", "Error"],
-    "answerIndex": 0,
-    "explanation": "Bitwise AND with 0 always results in 0."
-  },
-  {
-    "id": 109,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why are file pointers used in C?",
-    "options": [
-      "Store file data",
-      "Track file position",
-      "Speed up IO",
-      "Avoid buffers"
-    ],
-    "answerIndex": 1,
-    "explanation": "FILE pointers maintain state information such as current position and buffering."
-  },
-  {
-    "id": 110,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nFILE *fp=NULL; printf(\"%d\", fp==NULL);",
-    "options": ["0", "1", "Error", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "The pointer is explicitly set to NULL, so the comparison evaluates to true."
-  },
-
-  {
-    "id": 111,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is fflush(stdin) undefined behavior?",
-    "options": [
-      "Syntax error",
-      "Not defined for input streams",
-      "Compiler specific",
-      "Memory issue"
-    ],
-    "answerIndex": 1,
-    "explanation": "The C standard defines fflush only for output streams. Using it on stdin is undefined."
-  },
-  {
-    "id": 112,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint x=1; printf(\"%d\", x && x++);",
-    "options": ["0", "1", "2", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "The left operand is true, so the right is evaluated safely and x++ increments after use."
-  },
-  {
-    "id": 113,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is fprintf preferred for file output?",
-    "options": [
-      "Binary output",
-      "Formatted output",
-      "Faster execution",
-      "Automatic flush"
-    ],
-    "answerIndex": 1,
-    "explanation": "fprintf allows formatted data to be written to files, similar to printf for stdout."
-  },
-  {
-    "id": 114,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nFILE *fp=fopen(\"nofile.txt\",\"r\"); printf(\"%d\", fp==NULL);",
-    "options": ["0", "1", "Error", "Crash"],
-    "answerIndex": 1,
-    "explanation": "If the file does not exist, fopen returns NULL."
-  },
-  {
-    "id": 115,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is feof() unreliable as a loop condition?",
+    "difficulty": "superhard",
+    "question": "Why is the comma operator rarely recommended?",
     "options": [
       "Slow",
-      "Only true after failure",
-      "Syntax issue",
-      "Compiler bug"
-    ],
-    "answerIndex": 1,
-    "explanation": "feof() becomes true only after an attempted read fails, not before."
-  },
-
-  {
-    "id": 116,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint a=5; printf(\"%d\", a+=3);",
-    "options": ["8", "5", "3", "Undefined"],
-    "answerIndex": 0,
-    "explanation": "The compound assignment adds 3 to a and stores the result back."
-  },
-  {
-    "id": 117,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why are structure members aligned?",
-    "options": [
-      "Syntax rule",
-      "Hardware efficiency",
-      "Compiler bug",
-      "Memory waste"
-    ],
-    "answerIndex": 1,
-    "explanation": "Alignment improves CPU access efficiency and avoids misaligned memory access."
-  },
-  {
-    "id": 118,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nstruct A{char c; int i;}; printf(\"%d\", sizeof(struct A));",
-    "options": ["5", "8", "9", "Depends"],
-    "answerIndex": 3,
-    "explanation": "Structure size depends on padding and alignment rules of the architecture."
-  },
-  {
-    "id": 119,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is type-punning through pointers dangerous?",
-    "options": [
-      "Slow execution",
-      "Strict aliasing violation",
-      "Syntax error",
-      "Memory leak"
-    ],
-    "answerIndex": 1,
-    "explanation": "Accessing memory through incompatible pointer types violates strict aliasing rules and causes undefined behavior."
-  },
-  {
-    "id": 120,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=5; printf(\"%d\", *(float*)&x);",
-    "options": ["5.0", "Garbage", "0", "Undefined"],
-    "answerIndex": 3,
-    "explanation": "Reinterpreting an int as a float through a pointer violates strict aliasing, resulting in undefined behavior."
-  },
-
-  {
-    "id": 121,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is returning pointer to local array invalid?",
-    "options": [
-      "Syntax error",
-      "Stack memory reclaimed",
-      "Heap conflict",
-      "Compiler optimization"
-    ],
-    "answerIndex": 1,
-    "explanation": "Local arrays are allocated on the stack, which is destroyed when the function returns."
-  },
-  {
-    "id": 122,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint *p; printf(\"%d\", p==NULL);",
-    "options": ["0", "1", "Garbage", "Undefined"],
-    "answerIndex": 3,
-    "explanation": "An uninitialized pointer has an indeterminate value, so comparing it is undefined behavior."
-  },
-  {
-    "id": 123,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is sequence point important in C?",
-    "options": [
-      "Speed",
-      "Defines evaluation order",
-      "Memory safety",
-      "Linking"
-    ],
-    "answerIndex": 1,
-    "explanation": "Sequence points define when all side effects of previous evaluations are complete, preventing undefined behavior."
-  },
-  {
-    "id": 124,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nprintf(\"%d\", sizeof(\"abc\"));",
-    "options": ["3", "4", "5", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "String literals include the null terminator, so sizeof(\"abc\") is 4."
-  },
-  {
-    "id": 125,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is memcpy safer than manual copying sometimes?",
-    "options": [
-      "Faster always",
-      "Handles overlap",
-      "Well-defined behavior",
-      "Compiler required"
-    ],
-    "answerIndex": 2,
-    "explanation": "memcpy has well-defined semantics for copying raw memory blocks, reducing logical errors."
-  },
-
-  {
-    "id": 126,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint a=5; printf(\"%d\", a++ + ++a);",
-    "options": ["11", "12", "Undefined", "Error"],
-    "answerIndex": 2,
-    "explanation": "The variable a is modified more than once without a sequence point, causing undefined behavior."
-  },
-  {
-    "id": 127,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is pointer arithmetic limited to arrays?",
-    "options": [
-      "Syntax rule",
-      "C standard safety",
-      "Optimization",
-      "Memory alignment"
-    ],
-    "answerIndex": 1,
-    "explanation": "The C standard only defines pointer arithmetic within the bounds of a single array object."
-  },
-  {
-    "id": 128,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint a[]={1,2,3}; printf(\"%d\", *(a+5));",
-    "options": ["0", "3", "Garbage", "Error"],
-    "answerIndex": 2,
-    "explanation": "Accessing far outside array bounds results in undefined behavior."
-  },
-  {
-    "id": 129,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is free() on stack memory invalid?",
-    "options": [
-      "Compiler error",
-      "Heap allocator corruption",
-      "Syntax rule",
-      "Memory leak"
-    ],
-    "answerIndex": 1,
-    "explanation": "free() must only be used on heap memory allocated by malloc-family functions."
-  },
-  {
-    "id": 130,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=0; printf(\"%d\", x++ && ++x);",
-    "options": ["0", "1", "2", "Undefined"],
-    "answerIndex": 0,
-    "explanation": "Logical AND short-circuits when the left operand is false, so ++x is not evaluated."
-  },
-
-  {
-    "id": 131,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why are flexible array members useful?",
-    "options": [
-      "Static size",
-      "Dynamic struct sizing",
-      "Stack allocation",
-      "Faster access"
-    ],
-    "answerIndex": 1,
-    "explanation": "They allow structures to be allocated with variable-sized trailing arrays."
-  },
-  {
-    "id": 132,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nprintf(\"%d\", sizeof(int(*)[10]));",
-    "options": ["40", "8", "80", "Depends"],
-    "answerIndex": 3,
-    "explanation": "This is the size of a pointer to an array, which depends on architecture."
-  },
-  {
-    "id": 133,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is casting malloc discouraged in C?",
-    "options": [
-      "Slower code",
-      "Hides missing stdlib.h",
-      "Syntax issue",
-      "Memory leak"
-    ],
-    "answerIndex": 1,
-    "explanation": "Casting can hide missing declarations and cause subtle bugs."
-  },
-  {
-    "id": 134,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint *p = malloc(0); printf(\"%d\", p==NULL);",
-    "options": ["0", "1", "Undefined", "Error"],
-    "answerIndex": 3,
-    "explanation": "malloc(0) behavior is implementation-defined, so result is not guaranteed."
-  },
-  {
-    "id": 135,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why does undefined behavior enable optimizations?",
-    "options": [
-      "Simplifies code",
-      "Compiler assumes it never happens",
-      "Faster execution",
-      "Memory alignment"
-    ],
-    "answerIndex": 1,
-    "explanation": "Compilers can assume undefined behavior does not occur and optimize aggressively."
-  },
-
-  {
-    "id": 136,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint a=5; printf(\"%d\", *(char*)&a);",
-    "options": ["5", "Garbage", "Depends", "Undefined"],
-    "answerIndex": 2,
-    "explanation": "Reading raw bytes depends on endianness, making the output non-portable."
-  },
-  {
-    "id": 137,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is volatile not a synchronization primitive?",
-    "options": [
-      "Slow",
-      "No atomicity",
-      "Syntax rule",
-      "Compiler bug"
-    ],
-    "answerIndex": 1,
-    "explanation": "volatile prevents optimization but does not guarantee atomic access or memory ordering."
-  },
-  {
-    "id": 138,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nprintf(\"%d\", sizeof(char*) == sizeof(void*));",
-    "options": ["0", "1", "Depends", "Error"],
-    "answerIndex": 1,
-    "explanation": "All object pointers have the same size on a given architecture."
-  },
-  {
-    "id": 139,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is pointer provenance important?",
-    "options": [
-      "Syntax",
-      "Optimization correctness",
-      "Runtime speed",
-      "Heap safety"
-    ],
-    "answerIndex": 1,
-    "explanation": "Compilers track pointer origins to ensure optimizations remain correct."
-  },
-  {
-    "id": 140,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint *p=(int*)malloc(sizeof(int)); p++; free(p);",
-    "options": ["Safe", "Memory leak", "Undefined behavior", "Compile error"],
-    "answerIndex": 2,
-    "explanation": "free must be called on the original pointer returned by malloc."
-  },
-
-  {
-    "id": 141,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is accessing one-past-the-end pointer restricted?",
-    "options": [
-      "Syntax rule",
-      "Only comparison allowed",
-      "Compiler bug",
-      "Memory leak"
-    ],
-    "answerIndex": 1,
-    "explanation": "The C standard allows one-past-the-end pointer only for comparison, not dereferencing."
-  },
-  {
-    "id": 142,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nprintf(\"%d\", sizeof(int) * 2 + 1);",
-    "options": ["9", "7", "5", "Depends"],
-    "answerIndex": 3,
-    "explanation": "The result depends on the size of int on the system."
-  },
-  {
-    "id": 143,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is memory alignment required?",
-    "options": [
-      "Syntax",
-      "CPU access rules",
-      "Compiler bug",
-      "Optimization only"
-    ],
-    "answerIndex": 1,
-    "explanation": "Some CPUs require aligned memory access; misalignment can cause crashes or slowdowns."
-  },
-  {
-    "id": 144,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=5; printf(\"%d\", x-- * x);",
-    "options": ["20", "25", "Undefined", "Error"],
-    "answerIndex": 2,
-    "explanation": "x is modified and read without a sequence point, resulting in undefined behavior."
-  },
-  {
-    "id": 145,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is memcpy undefined for overlapping memory?",
-    "options": [
-      "Syntax",
-      "Data corruption",
-      "Optimization",
-      "Compiler bug"
-    ],
-    "answerIndex": 1,
-    "explanation": "Overlapping copies can overwrite source data; memmove should be used instead."
-  },
-
-  {
-    "id": 146,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint a[]={1,2,3}; printf(\"%d\", *(a-1));",
-    "options": ["Garbage", "0", "Error", "Undefined"],
-    "answerIndex": 3,
-    "explanation": "Pointer arithmetic before array bounds results in undefined behavior."
-  },
-  {
-    "id": 147,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why should sizeof be preferred over hardcoded sizes?",
-    "options": [
-      "Faster",
-      "Portability",
-      "Memory safety",
-      "Syntax"
-    ],
-    "answerIndex": 1,
-    "explanation": "Using sizeof ensures code adapts correctly across different architectures."
-  },
-  {
-    "id": 148,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=1; printf(\"%d\", x << x);",
-    "options": ["1", "2", "4", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "Left shifting 1 by 1 bit results in 2."
-  },
-  {
-    "id": 149,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is free() not allowed on memory not allocated by malloc?",
-    "options": [
-      "Syntax",
-      "Heap corruption",
-      "Optimization",
-      "Compiler rule"
-    ],
-    "answerIndex": 1,
-    "explanation": "The heap allocator expects valid metadata, which stack or static memory lacks."
-  },
-  {
-    "id": 150,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nprintf(\"%d\", sizeof(long double));",
-    "options": ["8", "12", "16", "Depends"],
-    "answerIndex": 3,
-    "explanation": "The size of long double is implementation-defined and varies by platform."
-  },
-  {
-    "id": 151,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why does sizeof(\"hello\") return more than strlen(\"hello\")?",
-    "options": [
-      "Compiler padding",
-      "Null terminator included",
-      "Optimization",
-      "Undefined behavior"
-    ],
-    "answerIndex": 1,
-    "explanation": "sizeof counts the null terminator because it measures storage size. strlen stops counting at the null character."
-  },
-  {
-    "id": 152,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nprintf(\"%d\", sizeof(\"A\"));",
-    "options": ["1", "2", "4", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "The string literal \"A\" includes the null terminator, so its size is 2 bytes."
-  },
-  {
-    "id": 153,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is strcmp preferred over == for strings?",
-    "options": [
-      "Faster execution",
-      "Compares content not addresses",
-      "Syntax rule",
-      "Memory safety"
-    ],
-    "answerIndex": 1,
-    "explanation": "== compares addresses, not string contents. strcmp compares characters lexicographically."
-  },
-  {
-    "id": 154,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nchar a[]=\"hi\", b[]=\"hi\"; printf(\"%d\", a==b);",
-    "options": ["0", "1", "Undefined", "Error"],
-    "answerIndex": 0,
-    "explanation": "a and b are different arrays with different addresses, so pointer comparison is false."
-  },
-  {
-    "id": 155,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is strncpy considered tricky?",
-    "options": [
-      "Slow",
-      "May not null-terminate",
+      "Hard to read",
       "Deprecated",
       "Undefined behavior"
     ],
     "answerIndex": 1,
-    "explanation": "If the source length equals or exceeds the limit, strncpy does not append a null terminator."
+    "explanation": "Although safe, the comma operator reduces readability and increases cognitive load."
   },
-
   {
-    "id": 156,
+    "id": 59,
     "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nchar s[5]; strncpy(s,\"hello\",5); printf(\"%s\", s);",
-    "options": ["hello", "hell", "Garbage", "Undefined"],
-    "answerIndex": 3,
-    "explanation": "The copied string is not null-terminated, so printing it invokes undefined behavior."
-  },
-  {
-    "id": 157,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why is memset(ptr,0,sizeof(ptr)) usually wrong?",
-    "options": [
-      "Syntax error",
-      "Clears only pointer",
-      "Too slow",
-      "Compiler bug"
-    ],
-    "answerIndex": 1,
-    "explanation": "sizeof(ptr) clears only the pointer itself, not the memory it points to."
-  },
-  {
-    "id": 158,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint *p=malloc(10*sizeof(int)); printf(\"%d\", sizeof(p));",
-    "options": ["10", "40", "8", "Depends"],
-    "answerIndex": 3,
-    "explanation": "sizeof(p) gives the size of the pointer, which depends on system architecture."
-  },
-  {
-    "id": 159,
-    "type": "concept",
-    "difficulty": "medium",
-    "question": "Why should realloc be assigned to a temporary pointer?",
-    "options": [
-      "Speed",
-      "Avoid memory leak",
-      "Syntax",
-      "Heap alignment"
-    ],
-    "answerIndex": 1,
-    "explanation": "If realloc fails and returns NULL, the original pointer would be lost, causing a memory leak."
-  },
-  {
-    "id": 160,
-    "type": "code",
-    "difficulty": "medium",
-    "question": "What is the output?\nint *p=malloc(sizeof(int)); p=realloc(p,0); printf(\"Done\");",
-    "options": ["Done", "Crash", "Compile error", "Undefined"],
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a=0;\nprintf(\"%d\", a++ && a++);",
+    "options": ["0", "1", "Undefined", "Compilation error"],
     "answerIndex": 0,
-    "explanation": "realloc with size 0 is allowed and often behaves like free, but printing is still safe here."
+    "explanation": "The first operand evaluates to false, so the second a++ is not evaluated due to short-circuiting."
   },
-
   {
-    "id": 161,
+    "id": 60,
     "type": "concept",
-    "difficulty": "hard",
-    "question": "Why does strict aliasing improve performance?",
+    "difficulty": "superhard",
+    "question": "Why does short-circuiting help avoid undefined behavior?",
     "options": [
-      "Less memory",
-      "Assumes no overlapping types",
-      "Fewer pointers",
-      "Stack optimization"
+      "Compiler inserts checks",
+      "Stops evaluation early",
+      "Reduces memory access",
+      "Guarantees sequence point"
     ],
     "answerIndex": 1,
-    "explanation": "The compiler can reorder memory operations safely if it assumes different types do not alias."
+    "explanation": "By not evaluating later operands, side effects that could cause undefined behavior are avoided."
   },
   {
-    "id": 162,
+    "id": 61,
     "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=5; float *f=(float*)&x; printf(\"%f\", *f);",
-    "options": ["5.0", "Garbage", "0.0", "Undefined"],
-    "answerIndex": 3,
-    "explanation": "Accessing an int through a float pointer violates strict aliasing rules."
-  },
-  {
-    "id": 163,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is volatile insufficient for thread safety?",
-    "options": [
-      "Slow access",
-      "No atomicity or ordering",
-      "Syntax rule",
-      "Compiler bug"
-    ],
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=5;\nprintf(\"%d\", x = (x++, x+2));",
+    "options": ["7", "6", "5", "Undefined behavior"],
     "answerIndex": 1,
-    "explanation": "volatile prevents optimization but does not guarantee atomic operations or memory ordering."
+    "explanation": "The comma operator introduces a sequence point. First x++ makes x=6, then x+2 evaluates to 8, but assignment happens after evaluation order rules — final value stored is 6."
   },
   {
-    "id": 164,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nvolatile int x=1; printf(\"%d\", x++ + x);",
-    "options": ["2", "3", "Undefined", "Error"],
-    "answerIndex": 2,
-    "explanation": "volatile does not create a sequence point. Modifying x twice still causes undefined behavior."
-  },
-  {
-    "id": 165,
+    "id": 62,
     "type": "concept",
-    "difficulty": "hard",
-    "question": "Why are bit-fields used in structures?",
+    "difficulty": "superhard",
+    "question": "Why is modifying and assigning the same variable risky even with sequence points?",
     "options": [
-      "Speed",
-      "Memory optimization",
-      "Thread safety",
-      "Alignment"
-    ],
-    "answerIndex": 1,
-    "explanation": "Bit-fields allow efficient storage of flags using minimal memory."
-  },
-
-  {
-    "id": 166,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nstruct{unsigned a:1;} s; s.a=2; printf(\"%u\", s.a);",
-    "options": ["0", "1", "2", "Undefined"],
-    "answerIndex": 1,
-    "explanation": "Only 1 bit is stored, so assigning 2 truncates the value to 1."
-  },
-  {
-    "id": 167,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is memcpy undefined for overlapping regions?",
-    "options": [
-      "Syntax rule",
-      "Source corruption",
       "Compiler bug",
+      "Hard to reason evaluation order",
+      "Always undefined behavior",
+      "Stack corruption"
+    ],
+    "answerIndex": 1,
+    "explanation": "Even when defined, such expressions are hard to read and reason about, increasing the risk of subtle logical bugs."
+  },
+  {
+    "id": 63,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a=1;\nprintf(\"%d\", a + (a=10));",
+    "options": ["11", "10", "Undefined behavior", "Compilation error"],
+    "answerIndex": 2,
+    "explanation": "The variable a is modified and read again without a sequence point. The order of evaluation is unspecified, leading to undefined behavior."
+  },
+  {
+    "id": 64,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is reading and writing the same scalar object without a sequence point undefined?",
+    "options": [
+      "CPU limitation",
+      "Compiler freedom",
+      "Memory alignment",
+      "Runtime overhead"
+    ],
+    "answerIndex": 1,
+    "explanation": "The C standard allows compilers to reorder evaluations freely, so such expressions cannot have a predictable result."
+  },
+  {
+    "id": 65,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=0;\nprintf(\"%d\", ++x || ++x);",
+    "options": ["1", "2", "Undefined behavior", "Compilation error"],
+    "answerIndex": 0,
+    "explanation": "++x makes x=1, which is true. Due to short-circuiting, the second ++x is not evaluated."
+  },
+
+  {
+    "id": 66,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why does logical OR introduce a sequence point?",
+    "options": [
+      "Syntax rule",
+      "Short-circuit guarantee",
+      "Compiler optimization",
+      "Historical reason"
+    ],
+    "answerIndex": 1,
+    "explanation": "Logical operators guarantee left-to-right evaluation and stop once the result is determined."
+  },
+  {
+    "id": 67,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a=5;\nprintf(\"%d\", a | a++);",
+    "options": ["5", "6", "Undefined behavior", "Compilation error"],
+    "answerIndex": 2,
+    "explanation": "Bitwise OR does not introduce a sequence point. a is read and modified without defined order, causing undefined behavior."
+  },
+  {
+    "id": 68,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why are bitwise operators more dangerous with side effects?",
+    "options": [
+      "Lower precedence",
+      "No short-circuiting",
+      "Compiler warnings",
+      "Runtime checks"
+    ],
+    "answerIndex": 1,
+    "explanation": "Bitwise operators always evaluate both operands, which can trigger undefined behavior when side effects are present."
+  },
+  {
+    "id": 69,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a=3;\nprintf(\"%d\", a & ++a);",
+    "options": ["2", "3", "4", "Undefined behavior"],
+    "answerIndex": 3,
+    "explanation": "The variable a is modified and read again without a sequence point, resulting in undefined behavior."
+  },
+  {
+    "id": 70,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why does C not define evaluation order for most operators?",
+    "options": [
+      "Language simplicity",
+      "Portability and optimization",
+      "Hardware differences",
+      "Backward compatibility"
+    ],
+    "answerIndex": 1,
+    "explanation": "Leaving order unspecified allows compilers to optimize code efficiently across different architectures."
+  },
+
+  {
+    "id": 71,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a[]={1,2,3};\nprintf(\"%d\", sizeof(a)/sizeof(a[0]));",
+    "options": ["2", "3", "Depends", "Undefined"],
+    "answerIndex": 1,
+    "explanation": "The expression correctly computes the number of elements in the array at compile time."
+  },
+  {
+    "id": 72,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why does sizeof(array) not work the same inside functions?",
+    "options": [
+      "Compiler bug",
+      "Arrays decay to pointers",
+      "Stack memory",
+      "Undefined behavior"
+    ],
+    "answerIndex": 1,
+    "explanation": "When passed to a function, arrays decay into pointers, losing size information."
+  },
+  {
+    "id": 73,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nvoid f(int a[]){ printf(\"%zu\", sizeof(a)); }\nint main(){ int x[10]; f(x); }",
+    "options": ["40", "10", "8", "Undefined"],
+    "answerIndex": 2,
+    "explanation": "Inside the function, a is treated as int*, so sizeof returns pointer size (typically 8 bytes)."
+  },
+  {
+    "id": 74,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why does array decay exist in C?",
+    "options": [
+      "Simplify syntax",
+      "Reduce memory usage",
+      "Enable pointer arithmetic",
+      "Historical and design reasons"
+    ],
+    "answerIndex": 3,
+    "explanation": "Array decay comes from early C design choices and supports efficient pointer-based access."
+  },
+  {
+    "id": 75,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint a=10;\nint *p=&a;\nprintf(\"%d\", *p++);",
+    "options": ["10", "11", "Undefined", "Compilation error"],
+    "answerIndex": 0,
+    "explanation": "*p++ is parsed as *(p++). The value pointed to is printed, then the pointer is incremented."
+  },
+
+  {
+    "id": 76,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is p++ safer than ++*p in pointer-heavy code?",
+    "options": [
+      "Better performance",
+      "Clearer intent",
+      "Avoids undefined behavior",
+      "Compiler preference"
+    ],
+    "answerIndex": 1,
+    "explanation": "Incrementing the pointer is often clearer and avoids accidentally modifying the pointed value."
+  },
+  {
+    "id": 77,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nprintf(\"%d\", sizeof(void*));",
+    "options": ["4", "8", "Depends on architecture", "Undefined"],
+    "answerIndex": 2,
+    "explanation": "The size of a pointer depends on the system architecture, commonly 8 bytes on 64-bit systems."
+  },
+  {
+    "id": 78,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why must all object pointers have the same size?",
+    "options": [
+      "Compiler simplification",
+      "Standard requirement",
+      "Memory alignment",
       "Optimization"
     ],
     "answerIndex": 1,
-    "explanation": "Overlapping copies may overwrite source data. memmove must be used instead."
+    "explanation": "The C standard requires that all object pointers can represent any object address, implying equal size."
   },
   {
-    "id": 168,
+    "id": 79,
     "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nchar s[]=\"abcdef\"; memmove(s+2,s,3); printf(\"%s\", s);",
-    "options": ["ababcf", "ababcdef", "abcabc", "Undefined"],
-    "answerIndex": 0,
-    "explanation": "memmove safely handles overlapping memory, shifting characters correctly."
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=5;\nprintf(\"%d\", *(char*)&x);",
+    "options": ["5", "Undefined", "Depends on endianness", "Compilation error"],
+    "answerIndex": 2,
+    "explanation": "Accessing an int through a char pointer is allowed, but the value depends on system endianness."
   },
   {
-    "id": 169,
+    "id": 80,
     "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is pointer comparison only defined within the same array?",
+    "difficulty": "superhard",
+    "question": "Why is char* allowed to alias any object?",
     "options": [
-      "Syntax",
-      "Undefined ordering otherwise",
-      "Slow execution",
-      "Compiler bug"
+      "Compiler optimization",
+      "Standard exception",
+      "Hardware limitation",
+      "Undefined behavior"
     ],
     "answerIndex": 1,
-    "explanation": "The C standard does not define relative ordering of unrelated objects in memory."
-  },
-  {
-    "id": 170,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint a=5,b=5; printf(\"%d\", &a < &b);",
-    "options": ["0", "1", "Depends", "Undefined"],
-    "answerIndex": 3,
-    "explanation": "Comparing addresses of unrelated objects has undefined behavior."
+    "explanation": "The C standard explicitly allows char pointers to access object representations byte by byte."
   },
 
   {
-    "id": 171,
+    "id": 81,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=0x01020304;\nprintf(\"%x\", *(unsigned char*)&x);",
+    "options": ["1", "2", "4", "Depends on endianness"],
+    "answerIndex": 3,
+    "explanation": "The first byte of the integer depends on whether the system is little-endian or big-endian."
+  },
+  {
+    "id": 82,
     "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is casting away const dangerous?",
+    "difficulty": "superhard",
+    "question": "Why is endianness important in low-level C programming?",
     "options": [
-      "Syntax error",
-      "May modify read-only memory",
-      "Slow execution",
-      "Compiler warning"
+      "Affects syntax",
+      "Affects portability",
+      "Affects compilation",
+      "Affects linking"
     ],
     "answerIndex": 1,
-    "explanation": "Modifying memory declared const results in undefined behavior."
+    "explanation": "Different byte orders can change how data is interpreted when accessed at byte level."
   },
   {
-    "id": 172,
+    "id": 83,
     "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nconst int x=5; int *p=(int*)&x; *p=10; printf(\"%d\", x);",
-    "options": ["5", "10", "Undefined", "Error"],
-    "answerIndex": 2,
-    "explanation": "Writing through a pointer that removes const violates the C standard."
+    "difficulty": "superhard",
+    "question": "What is the output?\nint *p = malloc(sizeof *p);\nprintf(\"%d\", p != NULL);",
+    "options": ["0", "1", "Undefined", "Compilation error"],
+    "answerIndex": 1,
+    "explanation": "malloc returns NULL on failure, otherwise a valid pointer. The comparison checks allocation success."
   },
   {
-    "id": 173,
+    "id": 84,
     "type": "concept",
-    "difficulty": "hard",
-    "question": "Why does the C standard allow undefined behavior?",
+    "difficulty": "superhard",
+    "question": "Why is sizeof *p preferred over sizeof(type)?",
     "options": [
-      "Simplify language",
-      "Enable optimizations",
-      "Avoid runtime checks",
+      "Shorter syntax",
+      "Avoids type mismatch bugs",
+      "Faster compilation",
+      "Compiler optimization"
+    ],
+    "answerIndex": 1,
+    "explanation": "Using sizeof *p automatically adapts to type changes, reducing maintenance errors."
+  },
+  {
+    "id": 85,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint *p = malloc(0);\nprintf(\"%d\", p == NULL);",
+    "options": ["0", "1", "Undefined", "Implementation-defined"],
+    "answerIndex": 3,
+    "explanation": "malloc(0) may return NULL or a unique pointer depending on implementation."
+  },
+
+  {
+    "id": 86,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is malloc(0) dangerous?",
+    "options": [
+      "Always returns NULL",
+      "May return non-NULL pointer",
+      "Causes memory leak",
+      "Undefined behavior"
+    ],
+    "answerIndex": 1,
+    "explanation": "Code that assumes malloc(0) returns NULL may break on systems where it returns a valid pointer."
+  },
+  {
+    "id": 87,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint *p = realloc(NULL, sizeof(int));\nprintf(\"%d\", p != NULL);",
+    "options": ["0", "1", "Undefined", "Compilation error"],
+    "answerIndex": 1,
+    "explanation": "realloc with NULL behaves like malloc, allocating new memory."
+  },
+  {
+    "id": 88,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why must realloc result be stored carefully?",
+    "options": [
+      "Avoid memory leak",
+      "Avoid double free",
+      "Avoid undefined behavior",
       "All of the above"
     ],
     "answerIndex": 3,
-    "explanation": "Undefined behavior allows compilers to generate efficient code without heavy runtime overhead."
+    "explanation": "If realloc fails and returns NULL, the original pointer is lost if overwritten."
   },
   {
-    "id": 174,
+    "id": 89,
     "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=1; printf(\"%d\", ++x * x++);",
-    "options": ["2", "4", "Undefined", "Error"],
-    "answerIndex": 2,
-    "explanation": "The variable x is modified multiple times without a sequence point."
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=5;\nprintf(\"%d\", *(int*)((char*)&x));",
+    "options": ["5", "Undefined", "Depends on endianness", "Compilation error"],
+    "answerIndex": 1,
+    "explanation": "Casting char* back to int* may violate alignment requirements, causing undefined behavior."
   },
   {
-    "id": 175,
+    "id": 90,
     "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is one-definition rule important?",
+    "difficulty": "superhard",
+    "question": "Why is misaligned access undefined?",
+    "options": [
+      "Compiler choice",
+      "CPU alignment constraints",
+      "Memory protection",
+      "Language syntax"
+    ],
+    "answerIndex": 1,
+    "explanation": "Some CPUs cannot handle misaligned memory access, so the C standard leaves it undefined."
+  },
+
+  {
+    "id": 91,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nvolatile int x=0;\nwhile(x==0){}\nprintf(\"Done\");",
+    "options": ["Infinite loop", "Done", "Undefined", "Compilation error"],
+    "answerIndex": 1,
+    "explanation": "volatile prevents the compiler from optimizing away reads of x, allowing the loop to observe external changes."
+  },
+  {
+    "id": 92,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why is volatile not a synchronization primitive?",
+    "options": [
+      "No atomicity",
+      "No memory ordering",
+      "No mutual exclusion",
+      "All of the above"
+    ],
+    "answerIndex": 3,
+    "explanation": "volatile only prevents optimization; it does not guarantee atomic operations or thread safety."
+  },
+  {
+    "id": 93,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=1;\nint *restrict p=&x;\nprintf(\"%d\", *p);",
+    "options": ["1", "Undefined", "Depends", "Compilation error"],
+    "answerIndex": 0,
+    "explanation": "Using restrict correctly imposes aliasing guarantees, but does not change behavior here."
+  },
+  {
+    "id": 94,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why does restrict enable optimization?",
+    "options": [
+      "Prevents pointer arithmetic",
+      "Prevents aliasing assumptions",
+      "Allows aggressive reordering",
+      "Reduces memory usage"
+    ],
+    "answerIndex": 2,
+    "explanation": "restrict tells the compiler that pointers do not alias, allowing safer optimizations."
+  },
+  {
+    "id": 95,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nint x=5;\nint *p=&x;\nint **q=&p;\nprintf(\"%d\", **q);",
+    "options": ["5", "Address", "Undefined", "Compilation error"],
+    "answerIndex": 0,
+    "explanation": "Double dereferencing accesses the original variable x."
+  },
+
+  {
+    "id": 96,
+    "type": "concept",
+    "difficulty": "superhard",
+    "question": "Why are double pointers commonly used?",
     "options": [
       "Performance",
-      "Link correctness",
-      "Memory usage",
-      "Syntax"
+      "Dynamic allocation APIs",
+      "Memory alignment",
+      "Stack usage"
     ],
     "answerIndex": 1,
-    "explanation": "Multiple conflicting definitions cause linker errors or undefined behavior."
+    "explanation": "They allow functions to modify pointer values, commonly used in allocation and data structure manipulation."
   },
-
   {
-    "id": 176,
+    "id": 97,
     "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nstatic int x; printf(\"%d\", x);",
-    "options": ["Garbage", "0", "Undefined", "Error"],
-    "answerIndex": 1,
-    "explanation": "Static variables are zero-initialized by default."
-  },
-  {
-    "id": 177,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why are function pointers used?",
-    "options": [
-      "Memory allocation",
-      "Callbacks and flexibility",
-      "Speed",
-      "Inlining"
-    ],
-    "answerIndex": 1,
-    "explanation": "Function pointers enable callbacks and dynamic function dispatch."
-  },
-  {
-    "id": 178,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint f(int x){return x+1;} int (*p)(int)=f; printf(\"%d\", p(5));",
-    "options": ["5", "6", "Undefined", "Error"],
-    "answerIndex": 1,
-    "explanation": "The function pointer correctly calls f with argument 5."
-  },
-  {
-    "id": 179,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is exit() different from return?",
-    "options": [
-      "Speed",
-      "Terminates entire program",
-      "Syntax",
-      "Stack cleanup"
-    ],
-    "answerIndex": 1,
-    "explanation": "exit() terminates the program immediately, while return exits the current function."
-  },
-  {
-    "id": 180,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nprintf(\"%d\", exit(0));",
-    "options": ["0", "Garbage", "No output", "Error"],
+    "difficulty": "superhard",
+    "question": "What is the output?\nprintf(\"%d\", 1/0);",
+    "options": ["0", "Infinity", "Undefined behavior", "Compilation error"],
     "answerIndex": 2,
-    "explanation": "exit() terminates the program, so printf never completes."
+    "explanation": "Integer division by zero is undefined behavior in C."
   },
-
   {
-    "id": 181,
+    "id": 98,
     "type": "concept",
-    "difficulty": "hard",
-    "question": "Why should warnings be treated as errors?",
+    "difficulty": "superhard",
+    "question": "Why is integer division by zero undefined?",
     "options": [
-      "Cleaner code",
-      "Catch undefined behavior early",
-      "Faster compile",
-      "Style only"
+      "Hardware trap differences",
+      "Compiler optimization",
+      "Language simplicity",
+      "Runtime overhead"
     ],
-    "answerIndex": 1,
-    "explanation": "Many warnings indicate real bugs that can lead to undefined behavior."
-  },
-  {
-    "id": 182,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x; printf(\"%d\", x);",
-    "options": ["0", "Garbage", "Undefined", "Error"],
-    "answerIndex": 2,
-    "explanation": "Local variables are not initialized automatically, leading to undefined behavior."
-  },
-  {
-    "id": 183,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is pointer provenance tracked by compilers?",
-    "options": [
-      "Syntax",
-      "Optimization correctness",
-      "Debugging",
-      "Memory allocation"
-    ],
-    "answerIndex": 1,
-    "explanation": "Tracking pointer origins helps compilers apply safe optimizations."
-  },
-  {
-    "id": 184,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint a[3]={1,2,3}; printf(\"%d\", *(a+3));",
-    "options": ["0", "3", "Garbage", "Undefined"],
-    "answerIndex": 3,
-    "explanation": "Dereferencing one-past-the-end pointer causes undefined behavior."
-  },
-  {
-    "id": 185,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is manual memory management error-prone?",
-    "options": [
-      "Syntax complexity",
-      "Human mistakes",
-      "Slow execution",
-      "Compiler issues"
-    ],
-    "answerIndex": 1,
-    "explanation": "Developers must track allocation, ownership, and lifetime manually."
-  },
-
-  {
-    "id": 186,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint *p=NULL; free(p); printf(\"OK\");",
-    "options": ["OK", "Crash", "Error", "Undefined"],
     "answerIndex": 0,
-    "explanation": "free(NULL) is defined as a no-op by the C standard."
+    "explanation": "Different architectures handle division by zero differently, so the C standard leaves it undefined."
   },
   {
-    "id": 187,
+    "id": 99,
+    "type": "code",
+    "difficulty": "superhard",
+    "question": "What is the output?\nprintf(\"%d\", sizeof(1 ? 1.0 : 1));",
+    "options": ["4", "8", "Depends", "Undefined"],
+    "answerIndex": 1,
+    "explanation": "The conditional operator yields a common type. 1.0 is double, so the result type is double."
+  },
+  {
+    "id": 100,
     "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is C still widely used?",
+    "difficulty": "superhard",
+    "question": "Why does the conditional operator perform type promotion?",
     "options": [
-      "Easy syntax",
-      "Low-level control",
-      "Automatic GC",
-      "Built-in safety"
+      "Simplify syntax",
+      "Ensure type consistency",
+      "Avoid undefined behavior",
+      "Compiler optimization"
     ],
     "answerIndex": 1,
-    "explanation": "C provides fine-grained control over memory and hardware."
-  },
-  {
-    "id": 188,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=5; printf(\"%d\", (x++, x));",
-    "options": ["5", "6", "Undefined", "Error"],
-    "answerIndex": 1,
-    "explanation": "The comma operator creates a sequence point; x is incremented then evaluated."
-  },
-  {
-    "id": 189,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is the comma operator rarely used?",
-    "options": [
-      "Slow",
-      "Reduces readability",
-      "Undefined behavior",
-      "Compiler bug"
-    ],
-    "answerIndex": 1,
-    "explanation": "Although well-defined, it often makes code harder to read and maintain."
-  },
-  {
-    "id": 190,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nprintf(\"%d\", sizeof(int)==sizeof(long));",
-    "options": ["0", "1", "Depends", "Error"],
-    "answerIndex": 2,
-    "explanation": "The result depends on platform-specific type sizes."
-  },
-
-  {
-    "id": 191,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is undefined behavior not predictable?",
-    "options": [
-      "Random execution",
-      "Compiler assumptions",
-      "Hardware issues",
-      "Memory leaks"
-    ],
-    "answerIndex": 1,
-    "explanation": "Compilers assume undefined behavior never happens and may generate unexpected code."
-  },
-  {
-    "id": 192,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=1; printf(\"%d\", x + (x=5));",
-    "options": ["6", "5", "Undefined", "Error"],
-    "answerIndex": 2,
-    "explanation": "Reading and writing x without a sequence point causes undefined behavior."
-  },
-  {
-    "id": 193,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is heap fragmentation bad?",
-    "options": [
-      "Syntax",
-      "Inefficient memory use",
-      "Slow CPU",
-      "Compiler bug"
-    ],
-    "answerIndex": 1,
-    "explanation": "Fragmentation reduces the ability to allocate large contiguous memory blocks."
-  },
-  {
-    "id": 194,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint *p; printf(\"%d\", p==NULL);",
-    "options": ["0", "1", "Undefined", "Error"],
-    "answerIndex": 2,
-    "explanation": "An uninitialized pointer has an indeterminate value, making the comparison undefined."
-  },
-  {
-    "id": 195,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why should every malloc have a matching free?",
-    "options": [
-      "Style",
-      "Prevent memory leaks",
-      "Compiler rule",
-      "Stack cleanup"
-    ],
-    "answerIndex": 1,
-    "explanation": "Unfreed heap memory accumulates and eventually exhausts available memory."
-  },
-
-  {
-    "id": 196,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=10; printf(\"%d\", x/0);",
-    "options": ["0", "Crash", "Undefined", "Error"],
-    "answerIndex": 2,
-    "explanation": "Division by zero is undefined behavior in C."
-  },
-  {
-    "id": 197,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is buffer overflow dangerous?",
-    "options": [
-      "Slow execution",
-      "Security vulnerability",
-      "Syntax error",
-      "Compiler issue"
-    ],
-    "answerIndex": 1,
-    "explanation": "Overwriting memory can corrupt data or allow arbitrary code execution."
-  },
-  {
-    "id": 198,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nchar s[3]; strcpy(s,\"abcd\"); printf(\"%s\", s);",
-    "options": ["abcd", "abc", "Garbage", "Undefined"],
-    "answerIndex": 3,
-    "explanation": "strcpy overflows the buffer, leading to undefined behavior."
-  },
-  {
-    "id": 199,
-    "type": "concept",
-    "difficulty": "hard",
-    "question": "Why is C considered unsafe by default?",
-    "options": [
-      "Slow",
-      "Manual memory management",
-      "No libraries",
-      "Complex syntax"
-    ],
-    "answerIndex": 1,
-    "explanation": "C gives direct memory access without automatic safety checks."
-  },
-  {
-    "id": 200,
-    "type": "code",
-    "difficulty": "hard",
-    "question": "What is the output?\nint x=5; printf(\"%d\", ++x + x++);",
-    "options": ["11", "12", "Undefined", "Error"],
-    "answerIndex": 2,
-    "explanation": "The variable is modified multiple times without a sequence point, causing undefined behavior."
+    "explanation": "Both branches must produce a compatible type so the expression has a well-defined result type."
   }
 ]
